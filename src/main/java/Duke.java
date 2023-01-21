@@ -14,8 +14,8 @@ public class Duke {
     static Task[] tasks = new Task[100];
     static int numTasks = 0;
 
-    private static void printWithIndentation(String s) {
-        Scanner scan = new Scanner(s);
+    private static void printWithIndentation(String outputString) {
+        Scanner scan = new Scanner(outputString);
         while (scan.hasNextLine()) {
             System.out.println(INDENT + scan.nextLine());
         }
@@ -76,22 +76,22 @@ public class Duke {
 
     }
 
-    private static int processInput(String s) {
-        Scanner input = new Scanner(s);
-        String command = input.next();
+    private static int executeCommandFromInput(String input) {
+        Scanner scan = new Scanner(input);
+        String command = scan.next();
         if (command.equals(COMMAND_EXIT)) {
             return -1;
         }
         if (command.equals(COMMAND_LIST)) {
             listTasks();
         } else if (command.equals(COMMAND_MARK)) { // mark task
-            int number = input.nextInt();
+            int number = scan.nextInt();
             setTaskStatus(number - 1, true);
         } else if (command.equals(COMMAND_UNMARK)) { // unmark task
-            int number = input.nextInt();
+            int number = scan.nextInt();
             setTaskStatus(number - 1, false);
         } else {
-            addTask(s);
+            addTask(input);
         }
         return 0;
     }
@@ -101,11 +101,10 @@ public class Duke {
         printLogo();
         greet();
 
-        String input;
         do {
-            input = scan.nextLine();
+            String input = scan.nextLine();
             printLine();
-            int state = processInput(input);
+            int state = executeCommandFromInput(input);
             if (state == -1) {
                 exit();
                 break;
